@@ -26,7 +26,6 @@ public class SceneLoader : IInitializable, IDisposable
     {
         if (IsLoading.Value)
         {
-            Debug.LogWarning("Сцена уже загружается!");
             return Observable.ReturnUnit();
         }
 
