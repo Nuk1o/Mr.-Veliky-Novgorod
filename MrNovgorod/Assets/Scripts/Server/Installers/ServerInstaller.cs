@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Server.ServerDataProviders.UserServerDataProvider;
+using UnityEngine;
 using Zenject;
 
 namespace Server.Installers
@@ -11,6 +12,7 @@ namespace Server.Installers
             Debug.Log($"Server installer started");
 #endif
             Container.BindInterfacesAndSelfTo<ServerController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UserServerDataProvider>().AsSingle();
         }
     }
 }

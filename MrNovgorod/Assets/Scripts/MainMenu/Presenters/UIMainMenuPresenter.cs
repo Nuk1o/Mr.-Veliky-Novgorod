@@ -8,6 +8,7 @@ namespace MainMenu.Presenters
     public class UIMainMenuPresenter
     {
         [Inject] private SceneLoader _sceneLoader;
+        [Inject] UISettingMenuPresenter _uiSettingMenuPresenter;
         private readonly UIMainMenuView _view;
         private CompositeDisposable _disposables;
 
@@ -19,14 +20,20 @@ namespace MainMenu.Presenters
         public void Initialize()
         {
             _disposables = new CompositeDisposable();
+#if DEBUG_LOG
             Debug.Log("UIMainMenuPresenter initialized");
+#endif
+
             SubscribeToButtonClicks();
             SceneLoaderInitialized();
         }
 
         private void SubscribeToButtonClicks()
         {
+#if DEBUG_LOG
             Debug.Log("Subscribing to button clicks");
+#endif
+
             _view.StartClickButton.Subscribe(_ => OnStartGameClicked()).AddTo(_view);
             _view.SettingClickButton.Subscribe(_ => OnSettingsClicked()).AddTo(_view);
             _view.ExitClickButton.Subscribe(_ => OnExitGameClicked()).AddTo(_view);
@@ -35,18 +42,12 @@ namespace MainMenu.Presenters
         private void SceneLoaderInitialized()
         {
             _sceneLoader.LoadProgress
-                .Subscribe(progress =>
-                {
-                    Debug.Log($"Загрузка сцены: {progress * 100}%");
-                })
+                .Subscribe(progress => { Debug.Log($"Загрузка сцены: {progress * 100}%"); })
                 .AddTo(_disposables);
-            
+
             _sceneLoader.IsLoading
                 .Where(isLoading => isLoading)
-                .Subscribe(_ =>
-                {
-                    Debug.Log("Загрузка сцены началась");
-                })
+                .Subscribe(_ => { Debug.Log("Загрузка сцены началась"); })
                 .AddTo(_disposables);
         }
 
@@ -54,15 +55,12 @@ namespace MainMenu.Presenters
         {
             Debug.Log("Начать игру");
             _sceneLoader.LoadSceneAsync("Game")
-                .Subscribe(_ =>
-                {
-                    Debug.Log("Сцена успешно загружена");
-                });
+                .Subscribe(_ => { Debug.Log("Сцена успешно загружена"); });
         }
 
         private void OnSettingsClicked()
         {
-            Debug.Log("Настройки");
+            _uiSettingMenuPresenter.ShowSettingsMenu();
         }
 
         private void OnExitGameClicked()

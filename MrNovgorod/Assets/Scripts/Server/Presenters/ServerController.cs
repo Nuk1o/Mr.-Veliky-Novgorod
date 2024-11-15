@@ -2,7 +2,6 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Server.Config;
 using UniRx;
 using UnityEngine;
@@ -86,7 +85,7 @@ public class ServerController : IInitializable, IDisposable
             {
                 try
                 {
-                    var jsonData = JsonConvert.SerializeObject(data);
+                    var jsonData = JsonUtility.ToJson(data);
                     var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
                     var response = await _httpClient.PostAsync(endpoint, content, cancellationTokenSource.Token);
                     response.EnsureSuccessStatusCode();
@@ -107,15 +106,15 @@ public class ServerController : IInitializable, IDisposable
     /// <summary>
     /// Пример обработки запроса и обработки результата.
     /// </summary>
-    public void FetchData()
-    {
-        var endpoint = "/api/example";
-
-        GetAsync(endpoint)
-            .Subscribe(
-                result => Debug.Log($"Data fetched: {result}"),
-                error => Debug.LogError($"Error fetching data: {error}")
-            )
-            .AddTo(_compositeDisposable);
-    }
+    // public void FetchData()
+    // {
+    //     var endpoint = "/api/example";
+    //     
+    //     GetAsync(endpoint)
+    //         .Subscribe(
+    //             result => Debug.Log($"Data fetched: {result}"),
+    //             error => Debug.LogError($"Error fetching data: {error}")
+    //         )
+    //         .AddTo(_compositeDisposable);
+    // }
 }
