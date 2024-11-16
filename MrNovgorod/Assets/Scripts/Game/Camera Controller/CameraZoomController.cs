@@ -16,6 +16,8 @@ namespace GameCore
         private CompositeDisposable _disposable;
         private float _currentZoom;
         private float _targetZoom;
+        
+        public ReactiveProperty<bool> IsZooming;
 
         private void Start()
         {
@@ -44,14 +46,20 @@ namespace GameCore
 
                 _targetZoom -= deltaDistance * _zoomSpeed;
                 _targetZoom = Mathf.Clamp(_targetZoom, _minZoom, _maxZoom);
+                IsZooming.Value = true;
+            }
+            else
+            {
+                IsZooming.Value = false;
             }
             
             if (Input.mouseScrollDelta.y != 0)
             {
                 _targetZoom -= Input.mouseScrollDelta.y * _zoomSpeed;
                 _targetZoom = Mathf.Clamp(_targetZoom, _minZoom, _maxZoom);
+                IsZooming.Value = true;
             }
-            
+
             _currentZoom = Mathf.Lerp(_currentZoom, _targetZoom, _smoothTime);
             _virtualCamera.m_Lens.FieldOfView = _currentZoom;
         }
