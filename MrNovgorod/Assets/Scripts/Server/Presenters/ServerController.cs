@@ -17,7 +17,7 @@ public class ServerController : IInitializable, IDisposable
     {
         _httpClient = new HttpClient
         {
-            BaseAddress = new Uri($"http://{ServerConfig.SERVER_ADRESS}:{ServerConfig.SERVER_PORT}")
+            BaseAddress = new Uri($"http://{ServerConfig.SERVER_ADRESS}")
         };
         _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {ServerConfig.API_KEY}");
     }
@@ -37,71 +37,48 @@ public class ServerController : IInitializable, IDisposable
         _httpClient?.Dispose();
     }
 
-    /// <summary>
-    /// Отправляет GET-запрос к API.
-    /// </summary>
-    /// <param name="endpoint">Конечная точка API.</param>
-    /// <returns>Объект Observable для подписки.</returns>
-    public IObservable<string> GetAsync(string endpoint)
+    
+    public async Task<T> GetAsync<T>(string endpoint)
     {
-        return Observable.Create<string>(observer =>
+        var cancellationTokenSource = new System.Threading.CancellationTokenSource();
+
+        try
         {
-            var cancellationTokenSource = new System.Threading.CancellationTokenSource();
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var response = await _httpClient.GetAsync(endpoint, cancellationTokenSource.Token);
-                    response.EnsureSuccessStatusCode();
-                    var result = await response.Content.ReadAsStringAsync();
-                    observer.OnNext(result);
-                    observer.OnCompleted();
-                }
-                catch (Exception e)
-                {
-                    observer.OnError(e);
-                }
-            }, cancellationTokenSource.Token);
-
-            return Disposable.Create(() => cancellationTokenSource.Cancel());
-        });
+            var response = await _httpClient.GetAsync(endpoint, cancellationTokenSource.Token);
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+            var data = JsonUtility.FromJson<T>(result); // Десериализация
+            return data;
+        }
+        catch (Exception e)
+        {
+            // Обработка ошибок (можно выбросить исключение или вернуть null)
+            Debug.LogError($"Error fetching data: {e}");
+            throw; // Или return null; в зависимости от вашей логики
+        }
     }
 
-    /// <summary>
-    /// Отправляет POST-запрос к API.
-    /// </summary>
-    /// <param name="endpoint">Конечная точка API.</param>
-    /// <param name="data">Данные для отправки (объект будет сериализован в JSON).</param>
-    /// <typeparam name="T">Тип данных для отправки.</typeparam>
-    /// <returns>Объект Observable для подписки.</returns>
-    public IObservable<string> PostAsync<T>(string endpoint, T data)
+    public async Task<T> PostAsync<T>(string endpoint, T data)
     {
-        return Observable.Create<string>(observer =>
+        var cancellationTokenSource = new System.Threading.CancellationTokenSource();
+
+        try
         {
-            var cancellationTokenSource = new System.Threading.CancellationTokenSource();
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var jsonData = JsonUtility.ToJson(data);
-                    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                    var response = await _httpClient.PostAsync(endpoint, content, cancellationTokenSource.Token);
-                    response.EnsureSuccessStatusCode();
-                    var result = await response.Content.ReadAsStringAsync();
-                    observer.OnNext(result);
-                    observer.OnCompleted();
-                }
-                catch (Exception e)
-                {
-                    observer.OnError(e);
-                }
-            }, cancellationTokenSource.Token);
-
-            return Disposable.Create(() => cancellationTokenSource.Cancel());
-        });
+            var jsonData = JsonUtility.ToJson(data);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", content, cancellationTokenSource.Token);
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+            var responseData = JsonUtility.FromJson<T>(result); 
+            return responseData;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error fetching data: {e}");
+            throw;
+        }
     }
+
 
     /// <summary>
     /// Пример обработки запроса и обработки результата.

@@ -53,7 +53,6 @@ namespace MainMenu.Presenters
 
         private void OnStartGameClicked()
         {
-            Debug.Log("Начать игру");
             _sceneLoader.LoadSceneAsync("Game")
                 .Subscribe(_ => { Debug.Log("Сцена успешно загружена"); });
         }
@@ -65,7 +64,6 @@ namespace MainMenu.Presenters
 
         private void OnExitGameClicked()
         {
-            Debug.Log("Выход из игры");
             Application.Quit();
         }
     }
