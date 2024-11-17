@@ -26,6 +26,8 @@ namespace GameCore.UI
         where TView : UISystemView
     {
         private readonly TPresenter _presenter;
+        
+        public TPresenter Presenter => _presenter;
 
         public UINavigatorFlow(TPresenter presenter)
         {
