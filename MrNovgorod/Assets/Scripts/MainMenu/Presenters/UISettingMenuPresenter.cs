@@ -24,7 +24,7 @@ namespace MainMenu.Presenters
 #if DEBUG_LOG
             Debug.Log($"SettingMenu initialized");
 #endif
-            _serverController.TestLogin(_disposable);
+            //_serverController.TestLogin(_disposable);
             
             _view.CloseButtonClick
                 .Subscribe(_ => _view.gameObject.SetActive(false))

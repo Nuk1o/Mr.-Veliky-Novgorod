@@ -35,9 +35,9 @@ namespace GameCore.Camera
 
         private void CameraMovementControls()
         {
-            if (FindObjectOfType<CameraZoomController>().IsZooming.Value)
+            var cameraZoomController = FindObjectOfType<CameraZoomController>();
+            if (cameraZoomController != null && cameraZoomController.IsZooming.Value)
                 return;
-
 
             if (Input.touchCount <= 0 && !Input.GetMouseButton(0)) return;
             Vector2 touchDelta;
@@ -70,6 +70,11 @@ namespace GameCore.Camera
 
             _camera.transform.position =
                 Vector3.SmoothDamp(_camera.transform.position, _targetPosition, ref _velocity, _smoothTime);
+        }
+        
+        private void OnDestroy()
+        {
+            Dispose();
         }
 
         public void Dispose()

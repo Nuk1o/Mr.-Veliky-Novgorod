@@ -26,7 +26,6 @@ namespace Game.Buildings
 
         public override void Start()
         {
-            // Resolve each PinUIPresenter by its unique identifier
             for (int i = 0; i < _pinUIViews.Length; i++)
             {
                 var presenter = Container.ResolveId<PinUIPresenter>(i);
