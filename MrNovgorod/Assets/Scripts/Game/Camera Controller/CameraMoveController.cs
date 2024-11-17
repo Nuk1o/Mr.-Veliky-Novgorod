@@ -3,7 +3,7 @@ using Cinemachine;
 using UniRx;
 using UnityEngine;
 
-namespace GameCore
+namespace GameCore.Camera
 {
     public class CameraMoveController : MonoBehaviour, IDisposable
     {
