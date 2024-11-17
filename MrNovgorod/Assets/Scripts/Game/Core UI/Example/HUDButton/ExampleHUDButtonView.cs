@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class ExampleHUDButtonView : UISystemView
 {
     [SerializeField] private Button _button;
-    
+
     public IObservable<Unit> TestClickButton => _button.OnClickAsObservable();
+
     public override void Initialize()
     {
         Debug.Log("ExampleHUDButtonView: Initialize");

@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Zenject;
+﻿using Zenject;
 
 namespace GameCore.UI
 {

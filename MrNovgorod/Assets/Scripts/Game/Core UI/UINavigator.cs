@@ -12,9 +12,6 @@ namespace GameCore.UI
             _container = container;
         }
 
-        /// <summary>
-        /// Показывает окно через Presenter.
-        /// </summary>
         public UINavigatorFlow<TPresenter, TView> Show<TPresenter, TView>()
             where TPresenter : UISystemPresenter<TView>
             where TView : UISystemView
@@ -52,7 +49,6 @@ namespace GameCore.UI
         public UINavigatorFlow<TPresenter, TView> WithHUD()
         {
             Debug.Log($"[UINavigator] {typeof(TPresenter).Name} показан с HUD.");
-            // Добавьте дополнительную логику для HUD.
             return this;
         }
     }

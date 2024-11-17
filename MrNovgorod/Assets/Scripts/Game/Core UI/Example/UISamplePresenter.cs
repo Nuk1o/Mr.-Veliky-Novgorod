@@ -1,6 +1,5 @@
 ﻿using GameCore.UI;
 using UnityEngine;
-using Zenject;
 
 public class UISamplePresenter : UISystemPresenter<UISampleView>
 {
@@ -9,7 +8,6 @@ public class UISamplePresenter : UISystemPresenter<UISampleView>
         _view = view;
     }
     
-
     protected override void BeforeShow()
     {
         Debug.Log("UISamplePresenter: BeforeShow");
@@ -19,9 +17,9 @@ public class UISamplePresenter : UISystemPresenter<UISampleView>
     {
         Debug.Log("UISamplePresenter: AfterShow");
     }
-    
+
     public void Initialize()
     {
-       Debug.Log("UISamplePresenter: Initialize");
+        Debug.Log("UISamplePresenter: Initialize");
     }
 }
