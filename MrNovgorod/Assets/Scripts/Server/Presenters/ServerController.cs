@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Server.Config;
 using UniRx;
@@ -44,7 +45,7 @@ public class ServerController : IInitializable, IDisposable
 
         try
         {
-            var response = await _httpClient.GetAsync(endpoint, cancellationTokenSource.Token);
+            var response = await _httpClient.GetAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", cancellationTokenSource.Token);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsStringAsync();
             var data = JsonUtility.FromJson<T>(result);
