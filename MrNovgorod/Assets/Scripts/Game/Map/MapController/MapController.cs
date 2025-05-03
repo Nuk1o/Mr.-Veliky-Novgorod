@@ -1,18 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game.Buildings;
+using Game.Buildings.Pins;
+using Game.Landmarks.Interface;
+using Game.Landmarks.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Game.MapController
 {
     public class MapController : MonoBehaviour
     {
+        [Inject] private LandmarksModel _landmarksServerModel;
+        
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private List<RectTransform> _mapRects;
         [Header("Pins")]
         [SerializeField] private List<GameObject> _pinsContainers;
-        [SerializeField] private BuildingsData _buildings;
+        [SerializeField] private BuildingsData _landmarksLocalModel;
         [SerializeField] private GameObject _pinPrefab;
         [Header("Buttons")]
         [SerializeField] private Button _zoomInButton;
@@ -47,13 +54,40 @@ namespace Game.MapController
         {
             for (var index = 0; index < _pinsContainers.Count; index++)
             {
-                foreach (var building in _buildings.Buildings)
+#if SERVER_ON
+                foreach (var building in _landmarksServerModel.Buildings)
                 {
-                    var pin = Instantiate(_pinPrefab,building.Value.BuildingPositions[index], Quaternion.identity,_pinsContainers[index].transform);
-                    var rectTransform = pin.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = building.Value.BuildingPositions[index];
+                    var pin = CreatePinOnMap(building,index);
+                    var controller = pin.GetComponent<PinController>();
+                    controller.Setup(building.Value);
                 }
+#else
+                foreach (var building in _landmarksLocalModel.Buildings)
+                {
+                    var pin = CreatePinOnMap(building,index);
+                    var controller = pin.GetComponent<PinController>();
+                    controller.Setup(building.Value);
+                }
+#endif
             }
+        }
+
+        private GameObject CreatePinOnMap<T>(KeyValuePair<Ebuildings, T> building, int index) 
+            where T : IBuildingPositionProvider
+        {
+            var position3D = building.Value.BuildingPositions[index];
+            var position2D = new Vector2(position3D.x, position3D.y);
+    
+            var pin = Instantiate(
+                _pinPrefab, 
+                position2D, 
+                Quaternion.identity,
+                _pinsContainers[index].transform
+            );
+            
+            var rectTransform = pin.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = position2D;
+            return pin;
         }
 
         private void ZoomOut()

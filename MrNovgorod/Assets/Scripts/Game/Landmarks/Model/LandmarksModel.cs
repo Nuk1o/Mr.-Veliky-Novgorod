@@ -1,13 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Numerics;
+using AYellowpaper.SerializedCollections;
+using Game.Buildings;
+using Game.Landmarks.Interface;
+using UnityEngine;
 
-namespace Game.landmarks
+namespace Game.Landmarks.Model
 {
     public class LandmarksModel
     {
-        public string Name;
-        public string Description;
-        
-        public List<Vector2> LandmarksPinPositions;
+        public SerializedDictionary<Ebuildings,LandmarkModel> Buildings;
+    }
+
+    public class LandmarkModel : IBuildingPositionProvider
+    {
+        public string NameBuilding;
+
+        public Sprite ImageBuilding;
+    
+        public string DescriptionBuilding;
+        public string HistoryBuilding;
+        public List<Vector3> BuildingPositions { get; set; }
     }
 }

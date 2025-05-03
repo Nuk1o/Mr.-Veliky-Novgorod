@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Vitoslavlitsy
   m_EditorClassIdentifier: 
   NameBuilding: "\u0412\u0438\u0442\u043E\u0441\u043B\u0430\u0432\u043B\u0438\u0446\u044B"
-  BuildingPositions:
+  BuildingPositionsSO:
   - {x: 20.1, y: -693.2, z: 0}
   - {x: 93, y: -1419, z: 0}
   - {x: 210, y: -3410, z: 0}

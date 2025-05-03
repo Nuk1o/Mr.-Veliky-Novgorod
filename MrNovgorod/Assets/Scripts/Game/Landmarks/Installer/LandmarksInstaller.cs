@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Game.Landmarks.DataProvider;
+using Game.Landmarks.Model;
 using Zenject;
 
-namespace Game.landmarks.Installer
+namespace Game.Landmarks.Installer
 {
     public class LandmarksInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
-            Container.Bind<LandmarksPresenter>().AsSingle();
+            Container.Bind<LandmarksModel>().AsSingle();
+            Container.Bind<LandmarksDataProvider>().AsSingle();
         }
-
-        private void Awake()
+        
+        public override void Start()
         {
-            Container.Resolve<LandmarksPresenter>().Initialize();
+            Container.Resolve<LandmarksDataProvider>().Initialize();
         }
     }
 }

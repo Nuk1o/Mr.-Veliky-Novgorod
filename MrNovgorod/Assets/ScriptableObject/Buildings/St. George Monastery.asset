@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: St. George Monastery
   m_EditorClassIdentifier: 
   NameBuilding: "\u042E\u0440\u044C\u0435\u0432 \u041C\u043E\u043D\u0430\u0441\u0442\u044B\u0440\u044C"
-  BuildingPositions:
+  BuildingPositionsSO:
   - {x: 174.9, y: -789.6, z: 0}
   - {x: 372, y: -1590, z: 0}
   - {x: 882, y: -3818, z: 0}
