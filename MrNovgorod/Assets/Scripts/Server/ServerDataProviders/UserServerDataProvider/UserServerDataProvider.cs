@@ -23,15 +23,30 @@ namespace Server.ServerDataProviders.UserServerDataProvider
                 Debug.LogError($"Error fetching data: {e}");
             }
         }
-
-        public async Task TestLogin(CompositeDisposable disposable)
+        
+        public async Task Test(CompositeDisposable disposable)
         {
-            var endpoint = "/api/test";
+            var endpoint = "attractions/get";
 
             try
             {
-                var result = await PostAsync(endpoint, new ServerData());
-                Debug.Log($"Data fetched: result = {result.result}, Name = {result}");
+                var result = await GetAsync<UserServerData>(endpoint);
+                Debug.Log($"Data fetched: ID = {result.id}, Name = {result.userName}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error fetching data: {e}");
+            }
+        }
+
+        public async Task TestLogin(CompositeDisposable disposable)
+        {
+            var endpoint = "attractions/create";
+
+            try
+            {
+                var result = await PostAsync(endpoint, "");
+                //Debug.Log($"Data fetched: result = {result.result}, Name = {result}");
             }
             catch (Exception e)
             {

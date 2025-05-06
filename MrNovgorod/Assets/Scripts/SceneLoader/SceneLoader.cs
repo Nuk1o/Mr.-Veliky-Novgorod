@@ -37,7 +37,7 @@ public class SceneLoader : IInitializable, IDisposable
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        var asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         asyncLoad.allowSceneActivation = false;
 
         while (!asyncLoad.isDone)

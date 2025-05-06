@@ -1,4 +1,8 @@
-﻿using Server.ServerDataProviders.UserServerDataProvider;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Server.ServerDataProviders;
+using Server.ServerDataProviders.UserServerDataProvider;
 using UnityEngine;
 using Zenject;
 
@@ -13,6 +17,21 @@ namespace Server.Installers
 #endif
             Container.BindInterfacesAndSelfTo<ServerController>().AsSingle();
             Container.BindInterfacesAndSelfTo<UserServerDataProvider>().AsSingle();
+            
+            //Container.BindInterfacesAndSelfTo<IServerDataProvider>();
+            
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Type interfaceType = typeof(IServerDataProvider);
+
+            var implementingTypes = assembly.GetTypes()
+                .Where(type => type.IsClass && interfaceType.IsAssignableFrom(type));
+
+            Debug.Log($"Классы, реализующие интерфейс {interfaceType.Name}:");
+            foreach (var type in implementingTypes)
+            {
+                Debug.Log($"ABOBA - {type.Name}");
+            }
+            
         }
     }
 }

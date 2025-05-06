@@ -23,7 +23,6 @@ namespace MainMenu.Installers
                 .WithArguments(_uiSettingMenuView);
         }
 
-
         public override void Start()
         {
             Container.Resolve<UIMainMenuPresenter>().Initialize();

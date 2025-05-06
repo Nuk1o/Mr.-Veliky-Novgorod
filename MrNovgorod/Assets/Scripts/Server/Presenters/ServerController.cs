@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Server.Config;
 using UniRx;
@@ -44,17 +45,16 @@ public class ServerController : IInitializable, IDisposable
 
         try
         {
-            var response = await _httpClient.GetAsync(endpoint, cancellationTokenSource.Token);
+            var response = await _httpClient.GetAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", cancellationTokenSource.Token);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsStringAsync();
-            var data = JsonUtility.FromJson<T>(result); // Десериализация
+            var data = JsonUtility.FromJson<T>(result);
             return data;
         }
         catch (Exception e)
         {
-            // Обработка ошибок (можно выбросить исключение или вернуть null)
             Debug.LogError($"Error fetching data: {e}");
-            throw; // Или return null; в зависимости от вашей логики
+            throw;
         }
     }
 
@@ -78,20 +78,4 @@ public class ServerController : IInitializable, IDisposable
             throw;
         }
     }
-
-
-    /// <summary>
-    /// Пример обработки запроса и обработки результата.
-    /// </summary>
-    // public void FetchData()
-    // {
-    //     var endpoint = "/api/example";
-    //     
-    //     GetAsync(endpoint)
-    //         .Subscribe(
-    //             result => Debug.Log($"Data fetched: {result}"),
-    //             error => Debug.LogError($"Error fetching data: {error}")
-    //         )
-    //         .AddTo(_compositeDisposable);
-    // }
 }

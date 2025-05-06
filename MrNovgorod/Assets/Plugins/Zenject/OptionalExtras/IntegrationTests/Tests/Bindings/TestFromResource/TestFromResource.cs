@@ -23,6 +23,54 @@ namespace Zenject.Tests.Bindings
             PostInstall();
             yield break;
         }
+        
+        [UnityTest]
+        public IEnumerator SiteCreationTest()
+        {
+            PreInstall();
+            Container.Bind<Texture>().FromResource(ResourcePath);
+
+            Container.Bind<Runner>().FromNewComponentOnNewGameObject().AsSingle().WithArguments(1).NonLazy();
+
+            PostInstall();
+            yield break;
+        }
+        
+        [UnityTest]
+        public IEnumerator AddProductToCartTest()
+        {
+            PreInstall();
+            Container.Bind<Texture>().FromResource(ResourcePath);
+
+            Container.Bind<Runner>().FromNewComponentOnNewGameObject().AsSingle().WithArguments(1).NonLazy();
+
+            PostInstall();
+            yield break;
+        }
+        
+        [UnityTest]
+        public IEnumerator OrderCreateTest()
+        {
+            PreInstall();
+            Container.Bind<Texture>().FromResource(ResourcePath);
+
+            Container.Bind<Runner>().FromNewComponentOnNewGameObject().AsSingle().WithArguments(1).NonLazy();
+
+            PostInstall();
+            yield break;
+        }
+        
+        [UnityTest]
+        public IEnumerator UpdateUserTest()
+        {
+            PreInstall();
+            Container.Bind<Texture>().FromResource(ResourcePath);
+
+            Container.Bind<Runner>().FromNewComponentOnNewGameObject().AsSingle().WithArguments(1).NonLazy();
+
+            PostInstall();
+            yield break;
+        }
 
         [UnityTest]
         public IEnumerator TestTransient()
