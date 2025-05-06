@@ -13,7 +13,6 @@ namespace Game.Landmarks.DataProvider
         
         public void Initialize()
         {
-            Debug.Log($"ABOBA Landmarks Data Provider initialized");
             _landmarksModel.Buildings = new SerializedDictionary<Ebuildings, LandmarkModel>();
 
             _landmarksModel.Buildings[Ebuildings.Vitoslavlitsy] = new LandmarkModel()

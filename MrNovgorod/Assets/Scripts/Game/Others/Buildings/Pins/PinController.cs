@@ -1,4 +1,5 @@
-﻿using Game.Hud.AttractionInformationWindow;
+﻿using Game.Hud;
+using Game.Hud.AttractionInformationWindow;
 using Game.Landmarks.Model;
 using GameCore.UI;
 using UniRx;
@@ -10,11 +11,10 @@ namespace Game.Buildings.Pins
 {
     public class PinController : MonoBehaviour
     {
-        [Inject] private UINavigator _uiNavigator;
-        [Inject] private AttractionInformationWindowPresenter _attractionInformation;
-        
         [SerializeField] private Button _button;
         
+        private UINavigator _uiNavigator;
+        private HUDCloseButtonPresenter _button1;
         private BuildingData _buildingData;
         private LandmarkModel _landmarkModel;
         private CompositeDisposable _compositeDisposable;
@@ -27,16 +27,18 @@ namespace Game.Buildings.Pins
                 .AddTo(_compositeDisposable);
         }
 
-        public void Setup(BuildingData buildingData = null, LandmarkModel landmarkModel = null)
+        public void Setup(BuildingData buildingData, UINavigator uiNavigator, HUDCloseButtonPresenter hudCloseButtonPresenter, LandmarkModel landmarkModel = null)
         {
             _buildingData = buildingData;
             _landmarkModel = landmarkModel;
+            _uiNavigator = uiNavigator;
+            _button1 = hudCloseButtonPresenter;
         }
 
         private void OpenInformationWindow()
         {
-            _attractionInformation.Initialize();
-            //_uiNavigator.Show<AttractionInformationWindowPresenter, AttractionInformationWindowView>().AsScreen().WithHUD();
+            Debug.Log($"AAA");
+            _uiNavigator.Show<AttractionInformationWindowPresenter, AttractionInformationWindowView>().AsScreen().WithHUD();
         }
     }
 }

@@ -2,8 +2,10 @@
 using System.Linq;
 using Game.Buildings;
 using Game.Buildings.Pins;
+using Game.Hud;
 using Game.Landmarks.Interface;
 using Game.Landmarks.Model;
+using GameCore.UI;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +16,8 @@ namespace Game.MapController
     public class MapController : MonoBehaviour
     {
         [Inject] private LandmarksModel _landmarksServerModel;
+        [Inject] private UINavigator _uiNavigator;
+        [Inject] private HUDCloseButtonPresenter _button1;
         
         [SerializeField] private ScrollRect _scrollRect;
         [SerializeField] private List<RectTransform> _mapRects;
@@ -28,11 +32,13 @@ namespace Game.MapController
         private CompositeDisposable _disposables;
         private ReactiveProperty<RectTransform> _currentMapRect;
         private List<TransitionData> _transitions;
+        private DiContainer _container;
 
         private void Start()
         {
             _disposables = new CompositeDisposable();
             _currentMapRect = new ReactiveProperty<RectTransform>();
+            _container = new DiContainer();
 
             InitializeTransitions();
             SetupStartMap();
@@ -66,7 +72,7 @@ namespace Game.MapController
                 {
                     var pin = CreatePinOnMap(building,index);
                     var controller = pin.GetComponent<PinController>();
-                    controller.Setup(building.Value);
+                    controller.Setup(building.Value, _uiNavigator, _button1);
                 }
 #endif
             }
@@ -77,13 +83,11 @@ namespace Game.MapController
         {
             var position3D = building.Value.BuildingPositions[index];
             var position2D = new Vector2(position3D.x, position3D.y);
-    
-            var pin = Instantiate(
-                _pinPrefab, 
+
+            var pin = _container.InstantiatePrefab(_pinPrefab, 
                 position2D, 
                 Quaternion.identity,
-                _pinsContainers[index].transform
-            );
+                _pinsContainers[index].transform);
             
             var rectTransform = pin.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = position2D;
