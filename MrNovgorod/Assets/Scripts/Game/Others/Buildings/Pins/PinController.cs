@@ -37,8 +37,11 @@ namespace Game.Buildings.Pins
 
         private void OpenInformationWindow()
         {
-            Debug.Log($"AAA");
-            _uiNavigator.Show<AttractionInformationWindowPresenter, AttractionInformationWindowView>().AsScreen().WithHUD();
+            var presenter = _uiNavigator
+                .Show<AttractionInformationWindowPresenter, AttractionInformationWindowView>()
+                .AsScreen();
+            
+            presenter.Presenter.SetupBuildingModel(_buildingData);
         }
     }
 }

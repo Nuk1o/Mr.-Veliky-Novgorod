@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Game.Buildings;
 using Game.Landmarks.Interface;
 using UnityEngine;
 
@@ -14,5 +13,8 @@ public class BuildingData : ScriptableObject, IBuildingPositionProvider
     
     public string DescriptionBuilding;
     public string HistoryBuilding;
+    
+    public List<string> ImageUrls = new List<string>();
+    
     public List<Vector3> BuildingPositions { get => BuildingPositionsSO; set => BuildingPositionsSO = value; }
 }   

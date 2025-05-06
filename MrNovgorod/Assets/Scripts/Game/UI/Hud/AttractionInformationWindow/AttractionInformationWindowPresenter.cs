@@ -3,11 +3,13 @@ using Game.Landmarks.Model;
 using GameCore.UI;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace Game.Hud.AttractionInformationWindow
 {
     public class AttractionInformationWindowPresenter : UISystemPresenter<AttractionInformationWindowView>, IDisposable
     {
+        [Inject] private ImageLoader _imageLoader;
         private readonly AttractionInformationWindowView _view;
         private CompositeDisposable _disposables;
         
@@ -28,6 +30,14 @@ namespace Game.Hud.AttractionInformationWindow
             _view.CloseClickButton
                 .Subscribe(_ => OnExitClick())
                 .AddTo(_disposables);
+            SetupImages();
+        }
+
+        private void SetupImages()
+        {
+            var sprites = _imageLoader.GetSprites();
+            Debug.Log($"Aboba load sprites: {sprites.Count}");
+            _view.GenerateImages(sprites);
         }
 
         public void SetupBuildingModel(BuildingData buildingData = null, LandmarkModel landmarkModel = null)
