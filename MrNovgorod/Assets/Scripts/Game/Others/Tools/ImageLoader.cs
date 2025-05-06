@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using Game.Buildings;
+using Game.Landmarks.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,32 +11,49 @@ using Zenject;
 
 public class ImageLoader : IInitializable, IDisposable
 {
-    List<Sprite> _images = new List<Sprite>();
-    List<string> _urls = new List<string>()
-    {
-        "http://kalotun123.beget.tech/storage/images/novgorod_kremlin.jpg",
-        "http://kalotun123.beget.tech/storage/images/Vitoslavlitsy.jpg"
-    };
+    [Inject] private LandmarksModel _landmarksModel;
+    private BuildingsData _landmarksLocalModel;
+    private Dictionary<Ebuildings, List<Sprite>> _images;
 
-    CompositeDisposable _disposable = new CompositeDisposable();
+    private CompositeDisposable _disposable;
 
     public void Initialize()
     {
         _disposable = new CompositeDisposable();
-        LoadSpriteAsync();
+        _images = new Dictionary<Ebuildings, List<Sprite>>();
     }
 
-    public List<Sprite> GetSprites()
+    public void SetupLocalData(BuildingsData landmarksLocalModel)
+    {
+        _landmarksLocalModel = landmarksLocalModel;
+    }
+
+    public Dictionary<Ebuildings, List<Sprite>> GetSprites()
     {
         return _images;
     }
 
-    private async void LoadSpriteAsync()
+    public async void LoadSpriteAsync()
     {
-        var list = await LoadImage(_urls);
-        _images = list;
-        Debug.Log($"Aboba {list.Count} images");
+#if SERVER_ON
+        foreach (var landmarkModel in _landmarksModel.Buildings)
+        {
+            var list = await LoadImage(landmarkModel.Value.ImageUrls);
+
+            foreach (var sprite in list)
+            {
+                _images.Add(landmarkModel.Key,sprite);
+            }
+        }
+#else
+        foreach (var landmarkModel in _landmarksLocalModel.Buildings)
+        {
+            var list = await LoadImage(landmarkModel.Value.ImageUrls);
+            var spriteList = list.ToList();
+            _images.Add(landmarkModel.Key, spriteList);
+        }
     }
+#endif
 
     private async UniTask<List<Sprite>> LoadImage(List<string> urls)
     {
@@ -47,21 +67,21 @@ public class ImageLoader : IInitializable, IDisposable
 
         return new List<Sprite>(sprites);
     }
-    
+
     private async UniTask<Sprite> LoadSpriteAsync(string url)
     {
         using var www = UnityWebRequestTexture.GetTexture(url);
-        
+
         try
         {
             await www.SendWebRequest().ToUniTask();
-            
+
             if (www.result != UnityWebRequest.Result.Success)
                 throw new Exception($"Error loading {url}: {www.error}");
 
             Texture2D texture = DownloadHandlerTexture.GetContent(www);
-            return Sprite.Create(texture, 
-                new Rect(0, 0, texture.width, texture.height), 
+            return Sprite.Create(texture,
+                new Rect(0, 0, texture.width, texture.height),
                 Vector2.zero);
         }
         catch (Exception ex)
@@ -75,4 +95,5 @@ public class ImageLoader : IInitializable, IDisposable
     {
         _disposable?.Dispose();
     }
+
 }

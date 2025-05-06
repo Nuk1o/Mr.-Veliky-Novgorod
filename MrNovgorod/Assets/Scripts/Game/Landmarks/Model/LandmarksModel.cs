@@ -20,5 +20,6 @@ namespace Game.Landmarks.Model
         public string DescriptionBuilding;
         public string HistoryBuilding;
         public List<Vector3> BuildingPositions { get; set; }
+        public List<string> ImageUrls { get; set; }
     }
 }

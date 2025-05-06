@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Game.Buildings;
 using GameCore.UI;
 using TMPro;
 using UniRx;
@@ -20,8 +22,6 @@ namespace Game.Hud.AttractionInformationWindow
         [SerializeField] private TMP_Text _description;
         
         public IObservable<Unit> CloseClickButton => _closeButton.OnClickAsObservable();
-        
-        public Transform PhotoContainer => _photoContainer;
 
         public void SetName(string name)
         {
@@ -33,15 +33,18 @@ namespace Game.Hud.AttractionInformationWindow
             _description.text = description;
         }
         
-        public void GenerateImages(List<Sprite> sprites)
+        public void GenerateImages(Ebuildings buildingID, Dictionary<Ebuildings, List<Sprite>> dictionary)
         {
             DestroyAllImages();
             SetZeroPosition();
-            
-            foreach (var sprite in sprites)
+
+            foreach (var value in dictionary.Where(value => value.Key == buildingID))
             {
-                var photo = Instantiate(_photoImagePrefab, Vector3.zero, Quaternion.identity, _photoContainer);
-                photo.sprite = sprite;
+                foreach (var sprite in value.Value)
+                {
+                    var photo = Instantiate(_photoImagePrefab, Vector3.zero, Quaternion.identity, _photoContainer);
+                    photo.sprite = sprite;
+                }
             }
         }
 

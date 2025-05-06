@@ -514,6 +514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d163e38fa344a3f8a598ba0db16bbb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildingsData: {fileID: 11400000, guid: e84c7167169205042a0b794aa45861c9, type: 2}
 --- !u!1 &288466357
 GameObject:
   m_ObjectHideFlags: 0

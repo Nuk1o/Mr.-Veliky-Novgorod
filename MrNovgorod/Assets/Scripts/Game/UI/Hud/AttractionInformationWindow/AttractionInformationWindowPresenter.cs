@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Buildings;
 using Game.Landmarks.Model;
 using GameCore.UI;
 using UniRx;
@@ -30,29 +31,30 @@ namespace Game.Hud.AttractionInformationWindow
             _view.CloseClickButton
                 .Subscribe(_ => OnExitClick())
                 .AddTo(_disposables);
-            SetupImages();
         }
 
-        private void SetupImages()
+        public void SetupImages(Ebuildings buildingID)
         {
             var sprites = _imageLoader.GetSprites();
-            Debug.Log($"Aboba load sprites: {sprites.Count}");
-            _view.GenerateImages(sprites);
+            _view.GenerateImages(buildingID,sprites);
         }
 
-        public void SetupBuildingModel(BuildingData buildingData = null, LandmarkModel landmarkModel = null)
+        public void SetupBuildingModel(BuildingData buildingData)
         {
-            if (buildingData != null)
-            {
-                _view.SetName(buildingData.NameBuilding);
-                _view.SetDescription(buildingData.DescriptionBuilding);
-            }
-
-            if (landmarkModel != null)
-            {
-                _view.SetName(landmarkModel.NameBuilding);
-                _view.SetDescription(landmarkModel.DescriptionBuilding);
-            }
+            if (buildingData == null)
+                return;
+            
+            _view.SetName(buildingData.NameBuilding);
+            _view.SetDescription(buildingData.DescriptionBuilding);
+        }
+        
+        public void SetupBuildingModel(LandmarkModel landmarkModel)
+        {
+            if (landmarkModel == null)
+                return;
+            
+            _view.SetName(landmarkModel.NameBuilding);
+            _view.SetDescription(landmarkModel.DescriptionBuilding);
         }
 
         private void OnExitClick()
@@ -62,7 +64,7 @@ namespace Game.Hud.AttractionInformationWindow
 
         public void Dispose()
         {
-            
+            _disposables.Dispose();
         }
     }
 }

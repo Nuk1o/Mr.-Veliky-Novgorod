@@ -65,14 +65,14 @@ namespace Game.MapController
                 {
                     var pin = CreatePinOnMap(building,index);
                     var controller = pin.GetComponent<PinController>();
-                    controller.Setup(building.Value);
+                    controller.Setup(building.Key, building.Value, _uiNavigator);
                 }
 #else
                 foreach (var building in _landmarksLocalModel.Buildings)
                 {
                     var pin = CreatePinOnMap(building,index);
                     var controller = pin.GetComponent<PinController>();
-                    controller.Setup(building.Value, _uiNavigator, _button1);
+                    controller.Setup(building.Key, building.Value, _uiNavigator);
                 }
 #endif
             }

@@ -1,5 +1,4 @@
-﻿using Game.Hud;
-using Game.Hud.AttractionInformationWindow;
+﻿using Game.Hud.AttractionInformationWindow;
 using Game.Landmarks.Model;
 using GameCore.UI;
 using UniRx;
@@ -14,10 +13,11 @@ namespace Game.Buildings.Pins
         [SerializeField] private Button _button;
         
         private UINavigator _uiNavigator;
-        private HUDCloseButtonPresenter _button1;
         private BuildingData _buildingData;
         private LandmarkModel _landmarkModel;
         private CompositeDisposable _compositeDisposable;
+
+        private Ebuildings _buildingID;
 
         private void Start()
         {
@@ -27,21 +27,30 @@ namespace Game.Buildings.Pins
                 .AddTo(_compositeDisposable);
         }
 
-        public void Setup(BuildingData buildingData, UINavigator uiNavigator, HUDCloseButtonPresenter hudCloseButtonPresenter, LandmarkModel landmarkModel = null)
+        public void Setup(Ebuildings buildingID, BuildingData buildingData, UINavigator uiNavigator, LandmarkModel landmarkModel = null)
         {
             _buildingData = buildingData;
             _landmarkModel = landmarkModel;
             _uiNavigator = uiNavigator;
-            _button1 = hudCloseButtonPresenter;
+            _buildingID = buildingID;
         }
 
         private void OpenInformationWindow()
         {
             var presenter = _uiNavigator
                 .Show<AttractionInformationWindowPresenter, AttractionInformationWindowView>()
-                .AsScreen();
-            
-            presenter.Presenter.SetupBuildingModel(_buildingData);
+                .AsScreen().Presenter;
+
+            if (_landmarkModel != null)
+            {
+                presenter.SetupBuildingModel(_landmarkModel);
+            }
+            else
+            {
+                presenter.SetupBuildingModel(_buildingData);
+            }
+
+            presenter.SetupImages(_buildingID);
         }
     }
 }
