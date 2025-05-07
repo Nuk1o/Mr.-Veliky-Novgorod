@@ -55,6 +55,7 @@ namespace Game.Hud.AttractionInformationWindow
             
             _view.SetName(landmarkModel.NameBuilding);
             _view.SetDescription(landmarkModel.DescriptionBuilding);
+            _view.SetHistory(landmarkModel.HistoryBuilding);
         }
 
         private void OnExitClick()

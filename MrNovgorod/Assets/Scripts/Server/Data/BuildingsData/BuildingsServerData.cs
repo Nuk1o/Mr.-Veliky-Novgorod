@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Server.Data.BuildingsData
 {
@@ -7,10 +8,12 @@ namespace Server.Data.BuildingsData
     {
         public int id { get; set; }
         public string name { get; set; }
+        public string global_coords { get; set; }
+        public string building_id { get; set; }
+        [CanBeNull] public string history { get; set; }
         public string[] images { get; set; }
         public double[][] coords { get; set; }
         public string description { get; set; }
-        //public int category_id { get; set; }
         public string address { get; set; }
         public int rating { get; set; }
     }

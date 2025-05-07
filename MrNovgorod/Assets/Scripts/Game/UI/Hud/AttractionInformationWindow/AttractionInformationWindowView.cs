@@ -14,12 +14,12 @@ namespace Game.Hud.AttractionInformationWindow
     {
         [SerializeField] private Button _closeButton;
         
-        [SerializeField] private Transform _photoContainer;
         [SerializeField] private RectTransform _photoRectTransform;
         [SerializeField] private Image _photoImagePrefab;
         
         [SerializeField] private TMP_Text _title;
         [SerializeField] private TMP_Text _description;
+        [SerializeField] private TMP_Text _history;
         
         public IObservable<Unit> CloseClickButton => _closeButton.OnClickAsObservable();
 
@@ -33,6 +33,11 @@ namespace Game.Hud.AttractionInformationWindow
             _description.text = description;
         }
         
+        public void SetHistory(string history)
+        {
+            _history.text = history;
+        }
+        
         public void GenerateImages(Ebuildings buildingID, Dictionary<Ebuildings, List<Sprite>> dictionary)
         {
             DestroyAllImages();
@@ -42,7 +47,7 @@ namespace Game.Hud.AttractionInformationWindow
             {
                 foreach (var sprite in value.Value)
                 {
-                    var photo = Instantiate(_photoImagePrefab, Vector3.zero, Quaternion.identity, _photoContainer);
+                    var photo = Instantiate(_photoImagePrefab, Vector3.zero, Quaternion.identity, _photoRectTransform);
                     photo.sprite = sprite;
                 }
             }
@@ -50,9 +55,9 @@ namespace Game.Hud.AttractionInformationWindow
 
         private void DestroyAllImages()
         {
-            for (int index = 0; index < _photoContainer.childCount; index++)
+            for (int index = 0; index < _photoRectTransform.childCount; index++)
             {
-                Destroy(_photoContainer.GetChild(index).gameObject);
+                Destroy(_photoRectTransform.GetChild(index).gameObject);
             }
         }
 

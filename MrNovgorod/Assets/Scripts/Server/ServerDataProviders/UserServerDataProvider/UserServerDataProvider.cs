@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Server.Data;
 using Server.Data.BuildingsData;
-using Server.Data.User;
-using UniRx;
 using UnityEngine;
 
 namespace Server.ServerDataProviders.UserServerDataProvider
