@@ -27,9 +27,15 @@ namespace Game.Buildings.Pins
                 .AddTo(_compositeDisposable);
         }
 
-        public void Setup(Ebuildings buildingID, BuildingData buildingData, UINavigator uiNavigator, LandmarkModel landmarkModel = null)
+        public void Setup(Ebuildings buildingID, BuildingData buildingData, UINavigator uiNavigator)
         {
             _buildingData = buildingData;
+            _uiNavigator = uiNavigator;
+            _buildingID = buildingID;
+        }
+        
+        public void Setup(Ebuildings buildingID, LandmarkModel landmarkModel, UINavigator uiNavigator)
+        {
             _landmarkModel = landmarkModel;
             _uiNavigator = uiNavigator;
             _buildingID = buildingID;

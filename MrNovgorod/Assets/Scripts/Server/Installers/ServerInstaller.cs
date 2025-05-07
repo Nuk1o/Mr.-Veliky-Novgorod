@@ -20,17 +20,17 @@ namespace Server.Installers
             
             //Container.BindInterfacesAndSelfTo<IServerDataProvider>();
             
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Type interfaceType = typeof(IServerDataProvider);
-
-            var implementingTypes = assembly.GetTypes()
-                .Where(type => type.IsClass && interfaceType.IsAssignableFrom(type));
-
-            Debug.Log($"Классы, реализующие интерфейс {interfaceType.Name}:");
-            foreach (var type in implementingTypes)
-            {
-                Debug.Log($"ABOBA - {type.Name}");
-            }
+            // Assembly assembly = Assembly.GetExecutingAssembly();
+            // Type interfaceType = typeof(IServerDataProvider);
+            //
+            // var implementingTypes = assembly.GetTypes()
+            //     .Where(type => type.IsClass && interfaceType.IsAssignableFrom(type));
+            //
+            // Debug.Log($"Классы, реализующие интерфейс {interfaceType.Name}:");
+            // foreach (var type in implementingTypes)
+            // {
+            //     Debug.Log($"ABOBA - {type.Name}");
+            // }
             
         }
     }

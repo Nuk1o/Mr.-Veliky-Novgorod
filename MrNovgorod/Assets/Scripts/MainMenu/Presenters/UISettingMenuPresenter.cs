@@ -9,7 +9,7 @@ namespace MainMenu.Presenters
 {
     public class UISettingMenuPresenter : IInitializable, IDisposable
     {
-        [Inject] UserServerDataProvider _serverController;
+        [Inject] private UserServerDataProvider _serverController;
         private CompositeDisposable _disposable;
         private readonly UISettingMenuView _view;
         

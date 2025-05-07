@@ -1,12 +1,12 @@
 using System;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Server.Config;
 using UniRx;
 using UnityEngine;
 using Zenject;
+using Newtonsoft.Json;
 
 public class ServerController : IInitializable, IDisposable
 {
@@ -48,7 +48,8 @@ public class ServerController : IInitializable, IDisposable
             var response = await _httpClient.GetAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", cancellationTokenSource.Token);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsStringAsync();
-            var data = JsonUtility.FromJson<T>(result);
+            var data = JsonConvert.DeserializeObject<T>(result);
+            //var data = JsonUtility.FromJson<T>(result);
             return data;
         }
         catch (Exception e)

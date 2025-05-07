@@ -15,6 +15,7 @@ namespace Game.Landmarks.Installer
         public override void Start()
         {
             Container.Resolve<LandmarksDataProvider>().Initialize();
+            Container.Resolve<LandmarksDataProvider>().LoadingData();
         }
     }
 }

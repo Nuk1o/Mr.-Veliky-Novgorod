@@ -8,7 +8,7 @@ namespace MainMenu.Presenters
     public class UIMainMenuPresenter
     {
         [Inject] private SceneLoader _sceneLoader;
-        [Inject] UISettingMenuPresenter _uiSettingMenuPresenter;
+        [Inject] private UISettingMenuPresenter _uiSettingMenuPresenter;
         private readonly UIMainMenuView _view;
         private CompositeDisposable _disposables;
 

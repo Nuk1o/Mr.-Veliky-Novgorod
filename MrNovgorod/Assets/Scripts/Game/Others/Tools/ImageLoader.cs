@@ -39,12 +39,10 @@ public class ImageLoader : IInitializable, IDisposable
         foreach (var landmarkModel in _landmarksModel.Buildings)
         {
             var list = await LoadImage(landmarkModel.Value.ImageUrls);
-
-            foreach (var sprite in list)
-            {
-                _images.Add(landmarkModel.Key,sprite);
-            }
+            var spriteList = list.ToList();
+            _images.Add(landmarkModel.Key, spriteList);
         }
+    }
 #else
         foreach (var landmarkModel in _landmarksLocalModel.Buildings)
         {
@@ -95,5 +93,4 @@ public class ImageLoader : IInitializable, IDisposable
     {
         _disposable?.Dispose();
     }
-
 }
