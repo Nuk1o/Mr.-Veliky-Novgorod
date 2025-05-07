@@ -53,7 +53,7 @@ namespace MainMenu.Presenters
 
         private void OnStartGameClicked()
         {
-            _sceneLoader.LoadSceneAsync("NewMap")
+            _sceneLoader.LoadSceneAsync("Map")
                 .Subscribe(_ => { Debug.Log("Сцена успешно загружена"); });
         }
 
