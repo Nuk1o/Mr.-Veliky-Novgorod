@@ -20,12 +20,23 @@ namespace Game.Hud.AttractionInformationWindow
         [SerializeField] private TMP_Text _title;
         [SerializeField] private TMP_Text _description;
         [SerializeField] private TMP_Text _history;
+
+        [Header("Menu")]
+        [SerializeField] private Button _mapButton;
+        [SerializeField] private Button _coordButton;
+        [SerializeField] private Button _descriptionButton;
+        [SerializeField] private Button _historyButton;
         
         public IObservable<Unit> CloseClickButton => _closeButton.OnClickAsObservable();
+        
+        public IObservable<Unit> MapClickButton => _mapButton.OnClickAsObservable();
+        public IObservable<Unit> CoordClickButton => _coordButton.OnClickAsObservable();
+        public IObservable<Unit> DescriptionClickButton => _descriptionButton.OnClickAsObservable();
+        public IObservable<Unit> HistoryClickButton => _historyButton.OnClickAsObservable();
 
-        public void SetName(string name)
+        public void SetName(string nameBuilding)
         {
-            _title.text = name;
+            _title.text = nameBuilding;
         }
 
         public void SetDescription(string description)

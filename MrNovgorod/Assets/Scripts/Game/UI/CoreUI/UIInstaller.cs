@@ -1,5 +1,6 @@
 ﻿using Game.Hud;
 using Game.Hud.AttractionInformationWindow;
+using Game.UI.BuildingListController;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +10,7 @@ namespace GameCore.UI
     {
         [SerializeField] private HUDCloseButtonView _hudCloseButtonView;
         [SerializeField] private AttractionInformationWindowView _attractionInformation;
+        [SerializeField] private BuildingListView _buildingListView;
 
         public override void InstallBindings()
         {
@@ -19,6 +21,9 @@ namespace GameCore.UI
             Container.Bind<AttractionInformationWindowView>().FromInstance(_attractionInformation).AsSingle();
             Container.Bind<AttractionInformationWindowPresenter>().AsSingle();
             
+            Container.Bind<BuildingListView>().FromInstance(_buildingListView).AsSingle();
+            Container.Bind<BuildingListPresenter>().AsSingle();
+            
             Container.Bind<UINavigator>().AsSingle().NonLazy();
         }
 
@@ -26,6 +31,7 @@ namespace GameCore.UI
         {
             Container.Resolve<HUDCloseButtonPresenter>().Initialize();
             Container.Resolve<AttractionInformationWindowPresenter>().Initialize();
+            Container.Resolve<BuildingListPresenter>().Initialize();
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Game.Hud.AttractionInformationWindow
         private readonly AttractionInformationWindowView _view;
         private CompositeDisposable _disposables;
         
+        private LandmarkModel _currentLandmark;
+        
         public AttractionInformationWindowPresenter(AttractionInformationWindowView view) : base(view)
         {
             _view = view;
@@ -28,9 +30,23 @@ namespace Game.Hud.AttractionInformationWindow
         protected override void BeforeShow()
         {
             _disposables = new CompositeDisposable();
+            
             _view.CloseClickButton
                 .Subscribe(_ => OnExitClick())
                 .AddTo(_disposables);
+            
+            _view.MapClickButton
+                .Subscribe(_ => Debug.Log("Открывается какрта и центруется над зданием"))
+                .AddTo(_disposables);
+            
+            _view.CoordClickButton
+                .Subscribe(_ => OnCoordClick())
+                .AddTo(_disposables);
+        }
+
+        private void OnCoordClick()
+        {
+            GUIUtility.systemCopyBuffer = _currentLandmark?.GlobalCoordinatesBuilding;
         }
 
         public void SetupImages(Ebuildings buildingID)
@@ -56,6 +72,7 @@ namespace Game.Hud.AttractionInformationWindow
             _view.SetName(landmarkModel.NameBuilding);
             _view.SetDescription(landmarkModel.DescriptionBuilding);
             _view.SetHistory(landmarkModel.HistoryBuilding);
+            _currentLandmark = landmarkModel;
         }
 
         private void OnExitClick()
