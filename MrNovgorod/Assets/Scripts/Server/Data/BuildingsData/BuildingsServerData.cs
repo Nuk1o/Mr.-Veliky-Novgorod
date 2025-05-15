@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Server.Data.BuildingsData
+namespace UserServerService.Data.BuildingsData
 {
     [Serializable]
     public class BuildingsServerData

@@ -1,4 +1,5 @@
 ﻿using MainMenu.Views;
+using Server.UserServerService;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -9,6 +10,8 @@ namespace MainMenu.Presenters
     {
         [Inject] private SceneLoader _sceneLoader;
         [Inject] private UISettingMenuPresenter _uiSettingMenuPresenter;
+        [Inject] private UIAccountPresenter _uiAccountPresenter;
+        [Inject] private IUserServerService _userServerService;
         private readonly UIMainMenuView _view;
         private CompositeDisposable _disposables;
 
@@ -36,7 +39,13 @@ namespace MainMenu.Presenters
 
             _view.StartClickButton.Subscribe(_ => OnStartGameClicked()).AddTo(_view);
             _view.SettingClickButton.Subscribe(_ => OnSettingsClicked()).AddTo(_view);
+            _view.AccountClickButton.Subscribe(_ => OnAccountClicked()).AddTo(_view);
             _view.ExitClickButton.Subscribe(_ => OnExitGameClicked()).AddTo(_view);
+        }
+
+        private void OnAccountClicked()
+        {
+            _uiAccountPresenter.ShowSettingsMenu();
         }
 
         private void SceneLoaderInitialized()

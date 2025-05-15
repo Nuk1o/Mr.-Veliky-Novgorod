@@ -1,6 +1,6 @@
 ﻿using System;
 using MainMenu.Views;
-using Server.ServerDataProviders.UserServerDataProvider;
+using Server.UserServerService;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -9,7 +9,7 @@ namespace MainMenu.Presenters
 {
     public class UISettingMenuPresenter : IInitializable, IDisposable
     {
-        [Inject] private UserServerDataProvider _serverController;
+        [Inject] private IUserServerService _serverController;
         private CompositeDisposable _disposable;
         private readonly UISettingMenuView _view;
         

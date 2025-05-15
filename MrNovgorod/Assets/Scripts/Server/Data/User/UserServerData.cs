@@ -1,4 +1,4 @@
-﻿namespace Server.Data.User
+﻿namespace UserServerService.Data.User
 {
     public struct UserServerData
     {

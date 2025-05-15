@@ -1,7 +1,9 @@
-﻿namespace Server.Data
+﻿namespace UserServerService.Data
 {
     public class ServerData
     {
-        public string result;
+        public bool success;
+        public string data;
+        public string message;
     }
 }

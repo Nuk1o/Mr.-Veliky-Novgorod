@@ -13,7 +13,7 @@ namespace MainMenu.Views
         [SerializeField] private TMP_Dropdown _dropdown;
         [SerializeField] private Slider _slider;
         [Space]
-        [SerializeField] Button _closeButton;
+        [SerializeField] private Button _closeButton;
         
         public IObservable<Unit> CloseButtonClick => _closeButton.OnClickAsObservable();
 

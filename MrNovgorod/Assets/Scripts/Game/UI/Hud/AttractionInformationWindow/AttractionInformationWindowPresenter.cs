@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Buildings;
 using Game.Landmarks.Model;
+using Game.UI.Popup;
 using GameCore.UI;
 using UniRx;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Game.Hud.AttractionInformationWindow
     public class AttractionInformationWindowPresenter : UISystemPresenter<AttractionInformationWindowView>, IDisposable
     {
         [Inject] private ImageLoader _imageLoader;
+        [Inject] private PopupPresenter _popupPresenter;
         private readonly AttractionInformationWindowView _view;
         private CompositeDisposable _disposables;
         
@@ -47,6 +49,7 @@ namespace Game.Hud.AttractionInformationWindow
         private void OnCoordClick()
         {
             GUIUtility.systemCopyBuffer = _currentLandmark?.GlobalCoordinatesBuilding;
+            _popupPresenter.ShowPopup("Координаты скопированы!");
         }
 
         public void SetupImages(Ebuildings buildingID)

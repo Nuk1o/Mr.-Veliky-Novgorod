@@ -3,7 +3,7 @@ using AYellowpaper.SerializedCollections;
 using Game.Buildings;
 using Game.Landmarks.Model;
 using Game.Others.Tools;
-using Server.ServerDataProviders.UserServerDataProvider;
+using Server.UserServerService;
 using UnityEngine;
 using Zenject;
 
@@ -12,7 +12,7 @@ namespace Game.Landmarks.DataProvider
     public class LandmarksDataProvider : IInitializable
     {
         [Inject] private LandmarksModel _landmarksModel;
-        [Inject] private UserServerDataProvider _serverController;
+        [Inject] private IUserServerService _serverController;
         
         public void Initialize()
         {

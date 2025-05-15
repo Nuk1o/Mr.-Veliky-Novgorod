@@ -2,11 +2,14 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Server.Config;
+using Cysharp.Threading.Tasks;
+using UserServerService.Config;
 using UniRx;
 using UnityEngine;
 using Zenject;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using UserServerService.Data;
 
 public class ServerController : IInitializable, IDisposable
 {
@@ -38,8 +41,8 @@ public class ServerController : IInitializable, IDisposable
         _httpClient?.Dispose();
     }
 
-    
-    public async Task<T> GetAsync<T>(string endpoint)
+
+    protected async UniTask<T> GetAsync<T>(string endpoint)
     {
         var cancellationTokenSource = new System.Threading.CancellationTokenSource();
 
@@ -59,23 +62,37 @@ public class ServerController : IInitializable, IDisposable
         }
     }
 
-    public async Task<T> PostAsync<T>(string endpoint, T data)
+    protected async UniTask<ServerData> PostAsync<T>(string endpoint, T data)
     {
-        var cancellationTokenSource = new System.Threading.CancellationTokenSource();
-
         try
         {
             var jsonData = JsonUtility.ToJson(data);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", content, cancellationTokenSource.Token);
+        
+            Debug.Log($"Sending Request: {jsonData}");
+        
+            var response = await _httpClient.PostAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", content);
             response.EnsureSuccessStatusCode();
+        
             var result = await response.Content.ReadAsStringAsync();
-            var responseData = JsonUtility.FromJson<T>(result); 
+            Debug.Log($"Server Response: {result}");
+
+            var jObject = JObject.Parse(result);
+            var dataString = jObject["data"]?.ToString();
+            
+            var responseData = JsonUtility.FromJson<ServerData>(result);
+            
+            responseData.data = dataString;
             return responseData;
+        }
+        catch (HttpRequestException e)
+        {
+            Debug.LogError($"HTTP Error: {e.Message}");
+            throw;
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error fetching data: {e}");
+            Debug.LogError($"Unexpected Error: {e}");
             throw;
         }
     }
