@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using UnityEngine;
 using Zenject;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine.Networking;
 using UserServerService.Data;
 
 public class ServerController : IInitializable, IDisposable
@@ -76,13 +78,10 @@ public class ServerController : IInitializable, IDisposable
         
             var result = await response.Content.ReadAsStringAsync();
             Debug.Log($"Server Response: {result}");
-
-            var jObject = JObject.Parse(result);
-            var dataString = jObject["data"]?.ToString();
-            
+    
             var responseData = JsonUtility.FromJson<ServerData>(result);
             
-            responseData.data = dataString;
+            responseData.data = result;
             return responseData;
         }
         catch (HttpRequestException e)
@@ -94,6 +93,54 @@ public class ServerController : IInitializable, IDisposable
         {
             Debug.LogError($"Unexpected Error: {e}");
             throw;
+        }
+    }
+
+    protected async UniTask<ServerData> GetAsync<T>(
+        string endpoint,
+        Dictionary<string, string> headers = null)
+    {
+        var url = $"{ServerConfig.SERVER_ADRESS}{endpoint}";
+
+        using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    request.SetRequestHeader(header.Key, header.Value);
+                }
+            }
+
+            request.uploadHandler = new UploadHandlerRaw(new byte[0]);
+            request.downloadHandler = new DownloadHandlerBuffer();
+
+            Debug.Log($"Sending empty POST request to {url}");
+
+            await request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                string error = $"HTTP error {request.responseCode}: {request.error}";
+                Debug.LogError(error);
+                throw new Exception(error);
+            }
+
+            string result = request.downloadHandler.text;
+            Debug.Log($"Server Response: {result}");
+
+            try
+            {
+                var resultRequest = JsonUtility.FromJson<ServerData>(result);
+                resultRequest.data = result;
+                return resultRequest;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to deserialize response: {e.Message}");
+                throw;
+            }
         }
     }
 }

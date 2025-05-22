@@ -9,5 +9,6 @@ namespace Server.UserServerService
         public UniTask<BuildingsServerData[]> GetBuildingsData();
         public UniTask RegisterUser(UserRegisterData userRegisterData);
         public UniTask LoginUser(UserLoginData userLoginData);
+        public UniTask GetUserData(string token);
     }
 }

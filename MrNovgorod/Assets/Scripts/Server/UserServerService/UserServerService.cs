@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Game.User;
 using Server.UserServerService.Data;
 using UnityEngine;
 using UserServerService;
+using UserServerService.Data;
 using UserServerService.Data.BuildingsData;
 
 namespace Server.UserServerService
@@ -64,6 +67,30 @@ namespace Server.UserServerService
             try
             {
                 var result = await PostAsync(api,userLoginData);
+                Debug.unityLogger.Log(result);
+                var token = JsonUtility.FromJson<AuthorizationServerData>(result.data);
+                await GetUserData(token.token);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async UniTask GetUserData(string token)
+        {
+            var api = "profile";
+
+            try
+            {
+                var headers = new Dictionary<string, string>
+                {
+                    { "Authorization", $"Bearer {token}" }
+                };
+
+                var result = await GetAsync<ServerData>(api, headers);
+                var userServerData = JsonUtility.FromJson<ServerUserModel>(result.data);
                 Debug.unityLogger.Log(result);
             }
             catch (Exception e)
