@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Game.User;
 using Server.UserServerService.Data;
@@ -54,7 +55,7 @@ namespace Server.UserServerService
             }
         }
 
-        public async UniTask LoginUser(UserLoginData userLoginData)
+        public async UniTask<AuthorizationServerData> LoginUser(UserLoginData userLoginData)
         {
             var api = "login";
             
@@ -69,7 +70,7 @@ namespace Server.UserServerService
                 var result = await PostAsync(api,userLoginData);
                 Debug.unityLogger.Log(result);
                 var token = JsonUtility.FromJson<AuthorizationServerData>(result.data);
-                await GetUserData(token.token);
+                return token;
             }
             catch (Exception e)
             {
@@ -78,7 +79,7 @@ namespace Server.UserServerService
             }
         }
 
-        public async UniTask GetUserData(string token)
+        public async UniTask<ServerUserModel> GetUserData(string token)
         {
             var api = "profile";
 
@@ -92,6 +93,7 @@ namespace Server.UserServerService
                 var result = await GetAsync<ServerData>(api, headers);
                 var userServerData = JsonUtility.FromJson<ServerUserModel>(result.data);
                 Debug.unityLogger.Log(result);
+                return userServerData;
             }
             catch (Exception e)
             {
