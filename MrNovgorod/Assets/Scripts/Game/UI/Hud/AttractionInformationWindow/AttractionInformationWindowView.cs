@@ -24,15 +24,13 @@ namespace Game.Hud.AttractionInformationWindow
         [Header("Menu")]
         [SerializeField] private Button _mapButton;
         [SerializeField] private Button _coordButton;
-        [SerializeField] private Button _descriptionButton;
-        [SerializeField] private Button _historyButton;
+        [SerializeField] private Button _review;
         
         public IObservable<Unit> CloseClickButton => _closeButton.OnClickAsObservable();
         
         public IObservable<Unit> MapClickButton => _mapButton.OnClickAsObservable();
         public IObservable<Unit> CoordClickButton => _coordButton.OnClickAsObservable();
-        public IObservable<Unit> DescriptionClickButton => _descriptionButton.OnClickAsObservable();
-        public IObservable<Unit> HistoryClickButton => _historyButton.OnClickAsObservable();
+        public IObservable<Unit> ReviewClickButton => _review.OnClickAsObservable();
 
         public void SetName(string nameBuilding)
         {

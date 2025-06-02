@@ -1,5 +1,6 @@
 ﻿using Game.Hud;
 using Game.Hud.AttractionInformationWindow;
+using Game.Hud.ReviewsWindow;
 using Game.UI.BuildingListController;
 using Game.UI.Popup;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace GameCore.UI
     {
         [SerializeField] private HUDCloseButtonView _hudCloseButtonView;
         [SerializeField] private AttractionInformationWindowView _attractionInformation;
+        [SerializeField] private ReviewsWindowView _reviewsWindowView;
         [SerializeField] private BuildingListView _buildingListView;
         [SerializeField] private PopupView _popupView;
 
@@ -22,6 +24,9 @@ namespace GameCore.UI
 
             Container.Bind<AttractionInformationWindowView>().FromInstance(_attractionInformation).AsSingle();
             Container.Bind<AttractionInformationWindowPresenter>().AsSingle();
+            
+            Container.Bind<ReviewsWindowView>().FromInstance(_reviewsWindowView).AsSingle();
+            Container.Bind<ReviewsWindowPresenter>().AsSingle();
             
             Container.Bind<BuildingListView>().FromInstance(_buildingListView).AsSingle();
             Container.Bind<BuildingListPresenter>().AsSingle();
@@ -36,6 +41,7 @@ namespace GameCore.UI
         {
             Container.Resolve<HUDCloseButtonPresenter>().Initialize();
             Container.Resolve<AttractionInformationWindowPresenter>().Initialize();
+            Container.Resolve<ReviewsWindowPresenter>().Initialize();
             Container.Resolve<BuildingListPresenter>().Initialize();
             Container.Resolve<PopupPresenter>().Setup(_popupView);
         }

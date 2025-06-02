@@ -1,5 +1,6 @@
 ﻿using System;
 using Game.Buildings;
+using Game.Hud.ReviewsWindow;
 using Game.Landmarks.Model;
 using Game.UI.Popup;
 using GameCore.UI;
@@ -11,8 +12,9 @@ namespace Game.Hud.AttractionInformationWindow
 {
     public class AttractionInformationWindowPresenter : UISystemPresenter<AttractionInformationWindowView>, IDisposable
     {
-        [Inject] private ImageLoader _imageLoader;
+        [Inject] private LandmarksImageLoader _landmarksImageLoader;
         [Inject] private PopupPresenter _popupPresenter;
+        [Inject] private UINavigator _uiNavigator;
         private readonly AttractionInformationWindowView _view;
         private CompositeDisposable _disposables;
         
@@ -44,6 +46,10 @@ namespace Game.Hud.AttractionInformationWindow
             _view.CoordClickButton
                 .Subscribe(_ => OnCoordClick())
                 .AddTo(_disposables);
+            
+            _view.ReviewClickButton
+                .Subscribe(_ => _uiNavigator.Show<ReviewsWindowPresenter,ReviewsWindowView>().AsScreen())
+                .AddTo(_disposables);
         }
 
         private void OnCoordClick()
@@ -54,7 +60,7 @@ namespace Game.Hud.AttractionInformationWindow
 
         public void SetupImages(Ebuildings buildingID)
         {
-            var sprites = _imageLoader.GetSprites();
+            var sprites = _landmarksImageLoader.GetSprites();
             _view.GenerateImages(buildingID,sprites);
         }
 

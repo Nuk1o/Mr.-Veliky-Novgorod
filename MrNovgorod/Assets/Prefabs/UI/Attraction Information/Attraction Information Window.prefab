@@ -756,7 +756,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.45
+  m_fontSize: 37.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1190,7 +1190,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &815859847853620946
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1207,9 +1207,9 @@ RectTransform:
   - {fileID: 7179743809294958031}
   m_Father: {fileID: 3419887702630000580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 843.14, y: -99.30425}
   m_SizeDelta: {x: 200.8845, y: 200.8845}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2074106665752580717
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435"
+  m_text: "\u041E\u0442\u0437\u044B\u0432\u044B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 08d74b4687ac9544f9378f9ada0ec8c4, type: 2}
   m_sharedMaterial: {fileID: -6231536602781037461, guid: 08d74b4687ac9544f9378f9ada0ec8c4, type: 2}
@@ -2737,8 +2737,7 @@ MonoBehaviour:
   _history: {fileID: 9048768557565191697}
   _mapButton: {fileID: 1920721854829528228}
   _coordButton: {fileID: 643239939176864767}
-  _descriptionButton: {fileID: 3119447903008945214}
-  _historyButton: {fileID: 8924401206662139898}
+  _review: {fileID: 3119447903008945214}
 --- !u!1 &8917347474656100070
 GameObject:
   m_ObjectHideFlags: 0

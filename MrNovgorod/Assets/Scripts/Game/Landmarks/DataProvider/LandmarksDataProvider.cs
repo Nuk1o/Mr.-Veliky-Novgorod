@@ -13,6 +13,7 @@ namespace Game.Landmarks.DataProvider
     {
         [Inject] private LandmarksModel _landmarksModel;
         [Inject] private IUserServerService _serverController;
+        [Inject] private ImageLoader _imageLoader;
         
         public void Initialize()
         {
@@ -28,6 +29,7 @@ namespace Game.Landmarks.DataProvider
                 var coords = data.coords.Select(coord => new Vector3((float)coord[0], (float)coord[1], 0)).ToList();
 
                 var images = data.images.ToList();
+                var image = await _imageLoader.LoadSpriteAsync(images.First());
 
                 var buildingID = BuildingTool.GetEbuildings(data.building_id);
 
@@ -36,6 +38,7 @@ namespace Game.Landmarks.DataProvider
                     NameBuilding = data.name,
                     BuildingPositions = coords,
                     ImageUrls = images,
+                    ImageBuilding = image,
                     DescriptionBuilding = data.description,
                     HistoryBuilding = data.history,
                     GlobalCoordinatesBuilding = data.global_coords,
