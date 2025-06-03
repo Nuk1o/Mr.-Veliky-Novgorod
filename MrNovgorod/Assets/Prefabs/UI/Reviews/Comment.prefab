@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 8962263591028393680}
   - component: {fileID: 3900304527118919603}
   - component: {fileID: 4134671285284391178}
+  - component: {fileID: -4231723292781350469}
   m_Layer: 5
   m_Name: Comment
   m_TagString: Untagged
@@ -154,6 +155,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-4231723292781350469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440128118782543621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e10a4e1ade2409aa5e24694ffac7b45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _userAvatar: {fileID: 6834045401009265017}
+  _nameText: {fileID: 6732768588793183726}
+  _reviewText: {fileID: 6024559813811939481}
+  _ratingText: {fileID: 8500120742346134403}
 --- !u!1 &8222493251211966841
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,8 +238,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041E\u0446\u0435\u043D\u043A\u0430: 5"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 08d74b4687ac9544f9378f9ada0ec8c4, type: 2}
+  m_sharedMaterial: {fileID: -6231536602781037461, guid: 08d74b4687ac9544f9378f9ada0ec8c4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

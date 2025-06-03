@@ -12,9 +12,19 @@ namespace UserServerService.Data.BuildingsData
         public string building_id { get; set; }
         [CanBeNull] public string history { get; set; }
         public string[] images { get; set; }
+        public ReviewsServerData[] reviews;
         public double[][] coords { get; set; }
         public string description { get; set; }
         public string address { get; set; }
         public int rating { get; set; }
+    }
+
+    public class ReviewsServerData
+    {
+        public int id { get; set; }
+        public int rating { get; set; }
+        public string comment { get; set; }
+        public string username { get; set; }
+        public string user_avatar { get; set; }
     }
 }

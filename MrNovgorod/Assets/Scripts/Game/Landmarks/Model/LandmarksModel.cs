@@ -16,6 +16,7 @@ namespace Game.Landmarks.Model
         public string NameBuilding;
 
         public Sprite ImageBuilding;
+        public string serverId;
     
         public string DescriptionBuilding;
         public string HistoryBuilding;
@@ -23,5 +24,15 @@ namespace Game.Landmarks.Model
         public string Address;
         public List<Vector3> BuildingPositions { get; set; }
         public List<string> ImageUrls { get; set; }
+        public List<LandmarkReviews> Reviews { get; set; }
+    }
+
+    public class LandmarkReviews
+    {
+        public int Id;
+        public int Rating;
+        public string Comment;
+        public string UserName;
+        public string UserAvatar;
     }
 }

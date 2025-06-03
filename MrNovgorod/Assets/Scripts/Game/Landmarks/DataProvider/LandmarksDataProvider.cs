@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
 using Game.Buildings;
 using Game.Landmarks.Model;
@@ -32,17 +33,31 @@ namespace Game.Landmarks.DataProvider
                 var image = await _imageLoader.LoadSpriteAsync(images.First());
 
                 var buildingID = BuildingTool.GetEbuildings(data.building_id);
+                var reviews = new List<LandmarkReviews>();
+
+                foreach (var serverData in data.reviews.ToList())
+                {
+                    var review = new LandmarkReviews();
+                    review.Id = serverData.id;
+                    review.Comment = serverData.comment;
+                    review.Rating = serverData.rating;
+                    review.UserName = serverData.username;
+                    review.UserAvatar = serverData.user_avatar;
+                    reviews.Add(review);
+                }
 
                 _landmarksModel.Buildings[buildingID] = new LandmarkModel()
                 {
                     NameBuilding = data.name,
                     BuildingPositions = coords,
+                    serverId = data.building_id,
                     ImageUrls = images,
                     ImageBuilding = image,
                     DescriptionBuilding = data.description,
                     HistoryBuilding = data.history,
                     GlobalCoordinatesBuilding = data.global_coords,
-                    Address = data.address
+                    Address = data.address,
+                    Reviews = reviews
                 };
             }
         }

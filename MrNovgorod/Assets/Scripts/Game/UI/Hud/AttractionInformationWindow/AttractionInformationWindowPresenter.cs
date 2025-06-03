@@ -2,10 +2,12 @@
 using Game.Buildings;
 using Game.Hud.ReviewsWindow;
 using Game.Landmarks.Model;
+using Game.Others.Tools;
 using Game.UI.Popup;
 using GameCore.UI;
 using UniRx;
 using UnityEngine;
+using UserServerService.Config;
 using Zenject;
 
 namespace Game.Hud.AttractionInformationWindow
@@ -40,7 +42,7 @@ namespace Game.Hud.AttractionInformationWindow
                 .AddTo(_disposables);
             
             _view.MapClickButton
-                .Subscribe(_ => Debug.Log("Открывается какрта и центруется над зданием"))
+                .Subscribe(_ => Application.OpenURL($"{ServerConfig.SITE_ADRESS}?building={_currentLandmark.serverId}"))
                 .AddTo(_disposables);
             
             _view.CoordClickButton
@@ -48,7 +50,11 @@ namespace Game.Hud.AttractionInformationWindow
                 .AddTo(_disposables);
             
             _view.ReviewClickButton
-                .Subscribe(_ => _uiNavigator.Show<ReviewsWindowPresenter,ReviewsWindowView>().AsScreen())
+                .Subscribe(_ =>
+                {
+                    var screen = _uiNavigator.Show<ReviewsWindowPresenter, ReviewsWindowView>().AsScreen();
+                    screen.Presenter.SetLandmarks(_currentLandmark);
+                })
                 .AddTo(_disposables);
         }
 
