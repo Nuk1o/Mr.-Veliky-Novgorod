@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Game.Landmarks.Model;
 using Game.Others.Tools;
 using GameCore.UI;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,10 +14,12 @@ namespace Game.Hud.ReviewsWindow
     {
         [SerializeField] private Button _sendButton;
         [SerializeField] private Button _backButton;
-        
+        [SerializeField] private TMP_InputField _inputField;
+        [SerializeField] private StarRating _starRating;
+
         [SerializeField] private ReviewPrefab _reviewPrefab;
         [SerializeField] private Transform _reviewsContainer;
-        
+
         public IObservable<Unit> SendClickButton => _sendButton.OnClickAsObservable();
         public IObservable<Unit> BackClickButton => _backButton.OnClickAsObservable();
         
@@ -34,5 +37,21 @@ namespace Game.Hud.ReviewsWindow
                 reviewPrefab.SetData(review,sprite);
             }
         }
+        
+        public ReviewData GetReviewData()
+        {
+            var reviewData = new ReviewData
+            {
+                comment = _inputField.text,
+                rating = (int)_starRating.GetRating()
+            };
+            return reviewData;
+        }
+    }
+
+    public struct ReviewData
+    {
+        public string comment;
+        public int rating;
     }
 }

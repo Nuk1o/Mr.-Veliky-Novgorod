@@ -95,6 +95,48 @@ public class ServerController : IInitializable, IDisposable
             throw;
         }
     }
+    
+    protected async UniTask<ServerData> PostAsync<T>(string endpoint, T data, Dictionary<string, string> headers = null)
+    {
+        try
+        {
+            var jsonData = JsonUtility.ToJson(data);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        
+            Debug.Log($"Sending Request: {jsonData}");
+
+            using (var client = new HttpClient())
+            {
+                if (headers != null)
+                {
+                    foreach (var header in headers)
+                    {
+                        client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
+                }
+
+                var response = await client.PostAsync($"{ServerConfig.SERVER_ADRESS}{endpoint}", content);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadAsStringAsync();
+                Debug.Log($"Server Response: {result}");
+
+                var responseData = JsonUtility.FromJson<ServerData>(result);
+                responseData.data = result;
+                return responseData;
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            Debug.LogError($"HTTP Error: {e.Message}");
+            throw;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Unexpected Error: {e}");
+            throw;
+        }
+    }
 
     protected async UniTask<ServerData> GetAsync<T>(
         string endpoint,

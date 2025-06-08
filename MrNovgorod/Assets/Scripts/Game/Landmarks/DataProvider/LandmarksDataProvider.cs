@@ -50,7 +50,8 @@ namespace Game.Landmarks.DataProvider
                 {
                     NameBuilding = data.name,
                     BuildingPositions = coords,
-                    serverId = data.building_id,
+                    serverName = data.building_id,
+                    serverId = data.id,
                     ImageUrls = images,
                     ImageBuilding = image,
                     DescriptionBuilding = data.description,

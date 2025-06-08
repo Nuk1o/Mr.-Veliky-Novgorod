@@ -1,4 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
+using Game.Hud.ReviewsWindow;
+using Game.Landmarks.Model;
 using Game.User;
 using Server.UserServerService.Data;
 using UserServerService;
@@ -12,5 +14,6 @@ namespace Server.UserServerService
         public UniTask RegisterUser(UserRegisterData userRegisterData);
         public UniTask<AuthorizationServerData> LoginUser(UserLoginData userLoginData);
         public UniTask<ServerUserModel> GetUserData(string token);
+        public UniTask SendReview(LandmarkModel model, ReviewData data);
     }
 }

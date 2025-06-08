@@ -9,7 +9,6 @@ namespace MainMenu.Presenters
     public class UIMainMenuPresenter
     {
         [Inject] private SceneLoader _sceneLoader;
-        [Inject] private UISettingMenuPresenter _uiSettingMenuPresenter;
         [Inject] private UIAccountPresenter _uiAccountPresenter;
         [Inject] private IUserServerService _userServerService;
         private readonly UIMainMenuView _view;
@@ -38,7 +37,6 @@ namespace MainMenu.Presenters
 #endif
 
             _view.StartClickButton.Subscribe(_ => OnStartGameClicked()).AddTo(_view);
-            _view.SettingClickButton.Subscribe(_ => OnSettingsClicked()).AddTo(_view);
             _view.AccountClickButton.Subscribe(_ => OnAccountClicked()).AddTo(_view);
             _view.ExitClickButton.Subscribe(_ => OnExitGameClicked()).AddTo(_view);
         }
@@ -64,11 +62,6 @@ namespace MainMenu.Presenters
         {
             _sceneLoader.LoadSceneAsync("Map")
                 .Subscribe(_ => { Debug.Log("Сцена успешно загружена"); });
-        }
-
-        private void OnSettingsClicked()
-        {
-            _uiSettingMenuPresenter.ShowSettingsMenu();
         }
 
         private void OnExitGameClicked()

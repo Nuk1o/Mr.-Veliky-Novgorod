@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Game.Hud.ReviewsWindow;
+using Game.Landmarks.Model;
 using Game.User;
 using Server.UserServerService.Data;
 using UnityEngine;
 using UserServerService;
 using UserServerService.Data;
 using UserServerService.Data.BuildingsData;
+using Zenject;
 
 namespace Server.UserServerService
 {
     public class UserServerService : ServerController, IUserServerService
     {
+        [Inject] private UserModel _userModel;
         public async UniTask<BuildingsServerData[]> GetBuildingsData()
         {
             var api = "attractions/get";
@@ -69,6 +73,7 @@ namespace Server.UserServerService
                 var result = await PostAsync(api,userLoginData);
                 Debug.unityLogger.Log(result);
                 var token = JsonUtility.FromJson<AuthorizationServerData>(result.data);
+                _userModel.token = token.token;
                 return token;
             }
             catch (Exception e)
@@ -91,12 +96,41 @@ namespace Server.UserServerService
 
                 var result = await GetAsync<ServerData>(api, headers);
                 var userServerData = JsonUtility.FromJson<ServerUserModel>(result.data);
+                _userModel.token = token;
                 Debug.unityLogger.Log(result);
                 return userServerData;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async UniTask SendReview(LandmarkModel model, ReviewData data)
+        {
+            var api = $"attractions/{model.serverId}/reviews";
+
+            try
+            {
+                ReviewServerData reviewServerData = new ReviewServerData()
+                {
+                    comment = data.comment,
+                    rating = data.rating
+                };
+        
+                var headers = new Dictionary<string, string>
+                {
+                    { "Authorization", $"Bearer {_userModel.token}" }
+                };
+        
+                // Передаем заголовки в PostAsync
+                var result = await PostAsync(api, reviewServerData, headers);
+                Debug.Log(result);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
                 throw;
             }
         }

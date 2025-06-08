@@ -16,7 +16,8 @@ namespace Game.Landmarks.Model
         public string NameBuilding;
 
         public Sprite ImageBuilding;
-        public string serverId;
+        public string serverName;
+        public int serverId;
     
         public string DescriptionBuilding;
         public string HistoryBuilding;

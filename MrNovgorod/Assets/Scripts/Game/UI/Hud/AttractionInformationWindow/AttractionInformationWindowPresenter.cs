@@ -42,7 +42,7 @@ namespace Game.Hud.AttractionInformationWindow
                 .AddTo(_disposables);
             
             _view.MapClickButton
-                .Subscribe(_ => Application.OpenURL($"{ServerConfig.SITE_ADRESS}?building={_currentLandmark.serverId}"))
+                .Subscribe(_ => Application.OpenURL($"{ServerConfig.SITE_ADRESS}?building={_currentLandmark.serverName}"))
                 .AddTo(_disposables);
             
             _view.CoordClickButton

@@ -4,6 +4,7 @@ namespace Game.User
 {
     public class UserModel
     {
+        public string token;
         public int id;
         public string name;
         public string email;
