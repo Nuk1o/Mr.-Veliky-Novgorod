@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using Game.Landmarks.Model;
 using Game.Others.Tools;
+using Game.User;
 using GameCore.UI;
 using TMPro;
 using UniRx;
@@ -30,12 +31,32 @@ namespace Game.Hud.ReviewsWindow
 
         public async UniTask SetReviews(LandmarkModel landmarkModel, ImageLoader imageLoader)
         {
+            for (var i = 0; i < _reviewsContainer.childCount; i++)
+            {
+                Destroy(_reviewsContainer.GetChild(i).gameObject);
+            }
+            
             foreach (var review in landmarkModel.Reviews)
             {
                 var reviewPrefab = Instantiate(_reviewPrefab, _reviewsContainer);
                 var sprite = await imageLoader.LoadSpriteAsync(review.UserAvatar);
                 reviewPrefab.SetData(review,sprite);
             }
+        }
+
+        public async void SendLocalReviews(ImageLoader imageLoader, UserModel userModel)
+        {
+            
+            var reviewPrefab = Instantiate(_reviewPrefab, _reviewsContainer);
+            var sprite = await imageLoader.LoadSpriteAsync(userModel.avatar);
+            var reviews = new LandmarkReviews()
+            {
+                UserAvatar = userModel.avatar,
+                UserName = userModel.name,
+                Rating = (int)_starRating.GetRating(),
+                Comment = _inputField.text
+            };
+            reviewPrefab.SetData(reviews,sprite);
         }
         
         public ReviewData GetReviewData()

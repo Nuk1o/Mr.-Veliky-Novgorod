@@ -2,8 +2,8 @@
 {
     public class ServerConfig
     {
-        public const string SERVER_ADRESS = "http://bombardilo.beget.tech/api/";
-        public const string SITE_ADRESS = "http://bombardilo.beget.tech/";
-        public const string API_KEY = "2|7f1kineQ8yrIKMC0ZKZKOISZfKnpiuqWPRYV0u9oa52d9ca6";
+        public const string SERVER_ADRESS = "http://mistervn.beget.tech/api/";
+        public const string SITE_ADRESS = "http://mistervn.beget.tech/";
+        public const string API_KEY = "3|TdrauQsWNAMvQORxDjPAdXgM7l2N6ksqF0ym6aEP0553c9a6";
     }
 }

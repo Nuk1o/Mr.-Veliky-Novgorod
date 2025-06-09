@@ -14,6 +14,7 @@ namespace MainMenu.Presenters
     {
         [Inject] private IUserServerService _serverController;
         [Inject] private ImageLoader _imageLoader;
+        [Inject] private UserModel _userModel;
         private CompositeDisposable _disposable;
         private readonly UIAccountView _view;
 
@@ -119,6 +120,8 @@ namespace MainMenu.Presenters
             OpenProfile(profileServerData);
             if (profileServerData.avatar != "")
             {
+                _userModel.avatar = profileServerData.avatar;
+                _userModel.name = profileServerData.name;
                 var avatar = await _imageLoader.LoadSpriteAsync(profileServerData.avatar);
                 _view.SetDataProfile(profileServerData, avatar);
             }

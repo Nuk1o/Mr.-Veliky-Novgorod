@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Landmarks.Model;
 using Game.Others.Tools;
+using Game.User;
 using GameCore.UI;
 using Server.UserServerService;
 using UniRx;
@@ -13,6 +14,7 @@ namespace Game.Hud.ReviewsWindow
     {
         [Inject] private ImageLoader _imageLoader;
         [Inject] private IUserServerService _serverController;
+        [Inject] private UserModel _userModel;
         private readonly ReviewsWindowView _view;
         private CompositeDisposable _disposables;
         private LandmarkModel _landmarkModel;
@@ -51,11 +53,13 @@ namespace Game.Hud.ReviewsWindow
         {
             var data = _view.GetReviewData();
             _serverController.SendReview(_landmarkModel,data);
+            _view.SendLocalReviews(_imageLoader, _userModel);
         }
         
         private void OnExitClick()
         {
             _view.gameObject.SetActive(false);
+            _disposables?.Dispose();
         }
         
         public void Dispose()
