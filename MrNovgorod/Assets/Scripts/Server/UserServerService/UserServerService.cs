@@ -74,6 +74,7 @@ namespace Server.UserServerService
                 Debug.unityLogger.Log(result);
                 var token = JsonUtility.FromJson<AuthorizationServerData>(result.data);
                 _userModel.token = token.token;
+                _userModel.IsLoggedIn = true;
                 return token;
             }
             catch (Exception e)
@@ -97,6 +98,7 @@ namespace Server.UserServerService
                 var result = await GetAsync<ServerData>(api, headers);
                 var userServerData = JsonUtility.FromJson<ServerUserModel>(result.data);
                 _userModel.token = token;
+                _userModel.IsLoggedIn = true;
                 Debug.unityLogger.Log(result);
                 return userServerData;
             }
@@ -124,7 +126,6 @@ namespace Server.UserServerService
                     { "Authorization", $"Bearer {_userModel.token}" }
                 };
         
-                // Передаем заголовки в PostAsync
                 var result = await PostAsync(api, reviewServerData, headers);
                 Debug.Log(result);
             }

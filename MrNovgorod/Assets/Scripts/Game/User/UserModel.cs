@@ -4,6 +4,7 @@ namespace Game.User
 {
     public class UserModel
     {
+        public bool IsLoggedIn;
         public string token;
         public int id;
         public string name;

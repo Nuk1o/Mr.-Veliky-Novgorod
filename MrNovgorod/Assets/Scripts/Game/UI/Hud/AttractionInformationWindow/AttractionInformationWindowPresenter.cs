@@ -2,7 +2,6 @@
 using Game.Buildings;
 using Game.Hud.ReviewsWindow;
 using Game.Landmarks.Model;
-using Game.Others.Tools;
 using Game.UI.Popup;
 using GameCore.UI;
 using UniRx;

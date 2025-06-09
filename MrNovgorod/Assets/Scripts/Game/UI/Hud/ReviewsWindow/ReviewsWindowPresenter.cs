@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Landmarks.Model;
 using Game.Others.Tools;
+using Game.UI.Popup;
 using Game.User;
 using GameCore.UI;
 using Server.UserServerService;
@@ -15,6 +16,7 @@ namespace Game.Hud.ReviewsWindow
         [Inject] private ImageLoader _imageLoader;
         [Inject] private IUserServerService _serverController;
         [Inject] private UserModel _userModel;
+        [Inject] private PopupPresenter _popupPresenter;
         private readonly ReviewsWindowView _view;
         private CompositeDisposable _disposables;
         private LandmarkModel _landmarkModel;
@@ -51,7 +53,17 @@ namespace Game.Hud.ReviewsWindow
         
         private void SendReview()
         {
+            if (!_userModel.IsLoggedIn)
+            {
+                _popupPresenter.ShowPopup("Для отправки отзыва требуется авторизация!");
+                return;
+            }
             var data = _view.GetReviewData();
+            if (data.rating == 0)
+            {
+                _popupPresenter.ShowPopup("Некорректный рейтинг.");
+                return;
+            }
             _serverController.SendReview(_landmarkModel,data);
             _view.SendLocalReviews(_imageLoader, _userModel);
         }

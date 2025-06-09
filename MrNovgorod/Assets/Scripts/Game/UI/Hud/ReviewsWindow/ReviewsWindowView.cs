@@ -23,6 +23,7 @@ namespace Game.Hud.ReviewsWindow
 
         public IObservable<Unit> SendClickButton => _sendButton.OnClickAsObservable();
         public IObservable<Unit> BackClickButton => _backButton.OnClickAsObservable();
+        public Button SendButton => _sendButton;
         
         public override void Initialize()
         {
