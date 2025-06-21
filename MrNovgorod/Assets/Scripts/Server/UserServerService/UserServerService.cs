@@ -50,6 +50,7 @@ namespace Server.UserServerService
                 var result = await PostAsync(api,userRegisterData);
                 var responseData = JsonUtility.FromJson<ServerRegisterData>(result.data);
                 Debug.Log($"Aboba {result} {responseData}");
+                return;
             }
             catch (Exception e)
             {
