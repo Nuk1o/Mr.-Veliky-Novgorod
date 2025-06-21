@@ -4,6 +4,7 @@ using Game.Others.Tools;
 using Game.UI.Popup;
 using Game.User;
 using GameCore.UI;
+using ModestTree;
 using Server.UserServerService;
 using UniRx;
 using UnityEngine;
@@ -62,6 +63,12 @@ namespace Game.Hud.ReviewsWindow
             if (data.rating == 0)
             {
                 _popupPresenter.ShowPopup("Некорректный рейтинг.");
+                return;
+            }
+
+            if (data.comment.IsEmpty())
+            {
+                _popupPresenter.ShowPopup("Для отправки отзыва требуется текст");
                 return;
             }
             _serverController.SendReview(_landmarkModel,data);

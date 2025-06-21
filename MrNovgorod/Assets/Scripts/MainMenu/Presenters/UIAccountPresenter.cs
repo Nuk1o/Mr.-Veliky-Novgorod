@@ -1,7 +1,9 @@
 ﻿using System;
 using Game.Others.Tools;
+using Game.UI.Popup;
 using Game.User;
 using MainMenu.Views;
+using ModestTree;
 using Server.UserServerService;
 using Server.UserServerService.Data;
 using UniRx;
@@ -15,6 +17,7 @@ namespace MainMenu.Presenters
         [Inject] private IUserServerService _serverController;
         [Inject] private ImageLoader _imageLoader;
         [Inject] private UserModel _userModel;
+        [Inject] private PopupPresenter _popupPresenter;
         private CompositeDisposable _disposable;
         private readonly UIAccountView _view;
 
@@ -39,7 +42,14 @@ namespace MainMenu.Presenters
             {
                 if (_currentWindow == EAccountWindows.Authorization)
                 {
-                    UserLogin();
+                    if (CheckInputs(EAccountWindows.Authorization))
+                    {
+                        UserLogin();
+                    }
+                    else
+                    {
+                        _popupPresenter.ShowPopup("Заполните поля!");
+                    }
                 }
                 else
                 {
@@ -52,7 +62,14 @@ namespace MainMenu.Presenters
             {
                 if (_currentWindow == EAccountWindows.Registration)
                 {
-                    RegisterUser();
+                    if (CheckInputs(EAccountWindows.Registration))
+                    {
+                        RegisterUser();
+                    }
+                    else
+                    {
+                        _popupPresenter.ShowPopup("Заполните поля!");
+                    }
                 }
                 else
                 {
@@ -75,40 +92,62 @@ namespace MainMenu.Presenters
             }
         }
 
+        private bool CheckInputs(EAccountWindows accountWindows)
+        {
+            if (accountWindows == EAccountWindows.Registration)
+            {
+                return !_view.NameInputField.text.IsEmpty() && !_view.EmailInputField.text.IsEmpty() && !_view.PasswordInputField.text.IsEmpty();
+            }
+            return !_view.EmailInputField.text.IsEmpty() && !_view.PasswordInputField.text.IsEmpty();
+        }
+
         private void OpenProfile(ServerUserModel profileServerData)
         {
-            Debug.Log($"ABOBA OPEN PROFILE: {profileServerData}");
         }
 
         private void RegisterUser()
         {
-            UserRegisterData registerData = new()
+            try
             {
-                name = _view.NameInputField.text,
-                email = _view.EmailInputField.text,
-                password = _view.PasswordInputField.text,
-                confirm_password = _view.PasswordInputField.text
-            };
-            _serverController.RegisterUser(registerData);
+                UserRegisterData registerData = new()
+                {
+                    name = _view.NameInputField.text,
+                    email = _view.EmailInputField.text,
+                    password = _view.PasswordInputField.text,
+                    confirm_password = _view.PasswordInputField.text
+                };
+                _serverController.RegisterUser(registerData);
+            }
+            catch
+            {
+                _popupPresenter.ShowPopup("Ошибка регистрации!");
+            }
         }
 
         private async void UserLogin()
         {
-            UserLoginData loginData = new()
+            try
             {
-                email = _view.EmailInputField.text,
-                password = _view.PasswordInputField.text
-            };
+                UserLoginData loginData = new()
+                {
+                    email = _view.EmailInputField.text,
+                    password = _view.PasswordInputField.text
+                };
 
-            var authorizationServerData = await _serverController.LoginUser(loginData);
-            var user = new UserPrefsAccount()
+                var authorizationServerData = await _serverController.LoginUser(loginData);
+                var user = new UserPrefsAccount()
+                {
+                    login = _view.NameInputField.text,
+                    email = _view.EmailInputField.text,
+                    token = authorizationServerData.token,
+                };
+                SaveUser(user);
+                LoginProfile(authorizationServerData.token);
+            }
+            catch
             {
-                login = _view.NameInputField.text,
-                email = _view.EmailInputField.text,
-                token = authorizationServerData.token,
-            };
-            SaveUser(user);
-            LoginProfile(authorizationServerData.token);
+                _popupPresenter.ShowPopup("Ошибка входа!");
+            }
         }
 
         private async void LoginProfile(string token)

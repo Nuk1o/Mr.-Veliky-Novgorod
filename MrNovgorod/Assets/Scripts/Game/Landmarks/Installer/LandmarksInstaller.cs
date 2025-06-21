@@ -18,4 +18,4 @@ namespace Game.Landmarks.Installer
             Container.Resolve<LandmarksDataProvider>().LoadingData();
         }
     }
-}
+}   
