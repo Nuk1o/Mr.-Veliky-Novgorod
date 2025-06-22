@@ -130,3 +130,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb277cd190141099352677465e830fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _popupView: {fileID: 5141876569045549823, guid: 3ce246c77afb55243aee86639a1ad973, type: 3}

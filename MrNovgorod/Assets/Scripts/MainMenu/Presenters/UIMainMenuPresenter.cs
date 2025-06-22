@@ -36,9 +36,9 @@ namespace MainMenu.Presenters
             Debug.Log("Subscribing to button clicks");
 #endif
 
-            _view.StartClickButton.Subscribe(_ => OnStartGameClicked()).AddTo(_view);
-            _view.AccountClickButton.Subscribe(_ => OnAccountClicked()).AddTo(_view);
-            _view.ExitClickButton.Subscribe(_ => OnExitGameClicked()).AddTo(_view);
+            _view.StartClickButton.Subscribe(_ => OnStartGameClicked()).AddTo(_disposables);
+            _view.AccountClickButton.Subscribe(_ => OnAccountClicked()).AddTo(_disposables);
+            _view.ExitClickButton.Subscribe(_ => OnExitGameClicked()).AddTo(_disposables);
         }
 
         private void OnAccountClicked()
